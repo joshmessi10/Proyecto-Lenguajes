@@ -1,6 +1,15 @@
-# proyecto-final-lenguajes-programacion: GramaticaMKS
+# 📚 Proyecto final: GramaticaMKS
 
-## Descripción
+## Integrantes
+
+- Eduardo Hincapie
+- Josh Lopez
+- Miguel Suarez
+- Alejandra Vargas
+
+---
+
+## 📝 Descripción
 
 Este proyecto define un lenguaje de programación basado en una gramática desarrollada con ANTLR4. El lenguaje soporta operaciones matemáticas, manejo de datos, funciones gráficas, manipulación de arrays, procesamiento de archivos, y operaciones de aprendizaje automático. Está diseñado para ser sencillo pero funcional, permitiendo una variedad de aplicaciones prácticas.
 
@@ -371,28 +380,80 @@ Ingrese un número para calcular su factorial: 5
 El factorial de 5 es: 120.
 ```
 
+## 🧷 Requerimientos
+
+### Dependencias necesarias
+
+- **ANTLR** (instalable en Linux y macOS)
+- **Python** (versión 3 o superior)
+
+### Instalación de ANTLR
+
+1. Instala ANTLR4 siguiendo los siguientes pasos
 
 
+#### Linux
+
+##### Opción 1:
+
+```sh
+sudo apt-get install antlr4
+```
+
+##### Opción 2:
+
+```sh
+cd /usr/local/lib
+sudo curl -O http://www.antlr.org/download/antlr-4.13.1-complete.jar
+export CLASSPATH=”.:/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH” 
+alias antlr4=’java -Xmx500M -cp “/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH” org.antlr.v4.Tool’
+alias grun=’java org.antlr.v4.gui.TestRig’
+```
 
 
-## Instalación y Ejecución
+### macOs
+Instalar homebrew
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+Instalar antlr
+```sh
+brew install antlr
+```
 
-1. Instala ANTLR4 siguiendo [su documentación oficial](https://www.antlr.org/).
-2. Clona este repositorio y navega a la carpeta principal del proyecto.
-3. Genera los archivos necesarios a partir de la gramática:
+##### Opción 2:
+
+```sh
+curl -O https://www.antlr.org/download/antlr-4.13.1-complete.jar
+```
+
+Mover el directorio:
+```
+mv antlr-4.13.1-complete.jar /usr/local/lib/
+```
+
+Agregarlo a `PATH` y `CLASSPATH`.
+```
+nano ~/.zshrc
+export CLASSPATH=".:/usr/local/lib/antlr-4.13.1-complete.jar:$CLASSPATH"
+alias antlr4='java -jar /usr/local/lib/antlr-4.13.1-complete.jar'
+alias grun='java org.antlr.v4.gui.TestRig'
+```
+
+Recarga el perfil:
+```
+source ~/.zshrc
+```
+
+# ⚡Como usarlo
+
+1. Clona este repositorio y navega a la carpeta principal del proyecto.
+
+2. Genera los archivos necesarios a partir de la gramática:
    ```bash
    antlr4 -Dlanguage=Python3 GramaticaMKS.g4
    ```
-4. Ejecuta el programa principal:
+3. Ejecuta el programa principal:
    ```bash
    python main.py input_file.mks
    ```
-
-
-
-## Integrantes
-
-- Mateo Fonseca
-- Karol Guerrero
-- Santiago Garzón
-
