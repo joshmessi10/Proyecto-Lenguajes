@@ -22,6 +22,8 @@ statement
     | sinStatement
     | cosStatement
     | tanStatement
+    | invStatement
+    | transStatement
     | inputStatement
     | arrayAppend
     | arrayRemove
@@ -66,6 +68,9 @@ sqrtStatement       : 'sqrt' '(' expr ')' ';'? ;
 sinStatement        : 'sin' '(' expr ')' ';'? ;
 cosStatement        : 'cos' '(' expr ')' ';'? ;
 tanStatement        : 'tan' '(' expr ')' ';'? ;
+invStatement        : 'inv' '(' expr ')' ';'? ;
+transStatement      : 'trans' '(' expr ')' ';'? ;
+
 
 inputStatement      : 'input' '(' STRING ')' ';'? ;
 
@@ -129,6 +134,8 @@ expr
    | sinStatement                                  #SinStmtExpr
    | cosStatement                                  #CosStmtExpr
    | tanStatement                                  #TanStmtExpr
+   | invStatement                                  #InvStmtExpr
+   | transStatement                                #TransStmtExpr
    | tensor                                        #TensorExpr
    | arr                                           #ArrayExpr
    | ID                                            #IdentifierExpr
