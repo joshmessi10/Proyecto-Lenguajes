@@ -1,8 +1,8 @@
 from GramaticaMKSVisitor import GramaticaMKSVisitor
 from scipy import stats
-import math
-import random
 import numpy as np
+import random
+import math_ops
 import matplotlib
 import matplotlib.pyplot as plt
 from collections import Counter
@@ -226,19 +226,19 @@ class MyVisitor(GramaticaMKSVisitor):
 
     def visitSqrtStatement(self, ctx):
         value = self.visit(ctx.expr())
-        return math.sqrt(value)
+        return value**(1/2)
 
     def visitSinStatement(self, ctx):
         value = self.visit(ctx.expr())
-        return np.sin(value)
+        return math_ops.sinus(value)
 
     def visitCosStatement(self, ctx):
         value = self.visit(ctx.expr())
-        return np.cos(value)
+        return math_ops.cosinus(value)
 
     def visitTanStatement(self, ctx):
         value = self.visit(ctx.expr())
-        return np.tan(value)
+        return math_ops.sinus(value)/math_ops.cosinus(value)
 
     def visitInputStatement(self, ctx):
         prompt = ctx.STRING().getText().strip('"')
@@ -337,7 +337,7 @@ class MyVisitor(GramaticaMKSVisitor):
 
     def visitTensor(self, ctx):
         rows = [self.visit(arr) for arr in ctx.arr()]
-        return np.array(rows)
+        return rows
 
     # -------- Manejo de Expr (según las etiquetas) --------
 
@@ -348,11 +348,19 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitLogicalNot(self, ctx):
         value = self.visit(ctx.expr())
         return not value
-
+    
+    def visitTransStatement(self, ctx):
+        value = self.visit(ctx.expr())
+        return math_ops.trans(value)
+    
+    def visitInvStatement(self, ctx):
+        value = self.visit(ctx.expr())
+        return math_ops.inv(value)
+    
     def visitPowerExpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        return math.pow(left, right)
+        return math_ops.puissance(left, right)
 
     def visitRootExpr(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -360,12 +368,12 @@ class MyVisitor(GramaticaMKSVisitor):
         # Raíz: x ^ y -> x^(1/y)
         if right == 0:
             return float("inf")
-        return math.pow(left, 1.0 / right)
+        return left ** (1.0 / right)
 
     def visitMultExpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        return left * right
+        return math_ops.multiplication(left,right)
 
     def visitDivExpr(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -382,19 +390,17 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitIntDivExpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        if right == 0:
-            raise ZeroDivisionError("División por cero")
-        return left // right
+        return math_ops.division(left,right)
 
     def visitAddExpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        return left + right
+        return math_ops.somme(left,right)
 
     def visitSubExpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        return left - right
+        return math_ops.soustraction(left,right)
 
     def visitEqExpr(self, ctx):
         left = self.visit(ctx.expr(0))
@@ -439,14 +445,7 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitDotProductExpr(self, ctx):
         left = self.visit(ctx.expr(0))
         right = self.visit(ctx.expr(1))
-        if isinstance(left, (list, np.ndarray)) and isinstance(
-            right, (list, np.ndarray)
-        ):
-            return np.dot(left, right)
-        else:
-            raise ValueError(
-                "Dot product requiere vectores o arreglos numéricos"
-                )
+        return math_ops.dot(left,right)
 
     def visitParentheses(self, ctx):
         return self.visit(ctx.expr())
@@ -490,6 +489,12 @@ class MyVisitor(GramaticaMKSVisitor):
 
     def visitTanStmtExpr(self, ctx):
         return self.visitTanStatement(ctx.tanStatement())
+    
+    def visitInvStmtExpr(self, ctx):
+        return self.visitInvStatement(ctx.invStatement())
+    
+    def visitTransStmtExpr(self, ctx):
+        return self.visitTransStatement(ctx.transStatement())
 
     def visitTensorExpr(self, ctx):
         return self.visitTensor(ctx.tensor())
