@@ -283,3 +283,21 @@ print("El factorial de " + str(numero) + " es: " + str(fact) + ".");
 Ingrese un número para calcular su factorial: 5
 El factorial de 5 es: 120.
 ```
+
+### 5. **Matriz**
+
+```
+let x=[[1,2,3],[1,1,1]];
+let y=[[9,8,7],[2,3,4]];
+let cuadrado =[
+    [4, 7],
+    [2, 6]
+]
+print(x+y);
+print(x-y);
+print(2*x);
+print(cuadrado @ x)
+print(inv(cuadrado));
+print(trans(cuadrado));
+```
+**Salida:**
