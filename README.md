@@ -118,11 +118,11 @@ echo alias mks="python3 '$(pwd)/main.py'" >>  ~/.zshrc
 
 2. Genera los archivos necesarios a partir de la gramática:
    ```bash
-   antlr4 -Dlanguage=Python3 GramaticaMKS.g4
+   antlr4 -Dlanguage=Python3 -visitor GramaticaMKS.g4
    ```
 3. Ejecuta el programa principal:
    ```bash
-   python main.py input_file.mks
+   python3 main.py input_file.mks
    ```
 
 
