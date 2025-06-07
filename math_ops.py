@@ -17,14 +17,14 @@ def puissance(x, y):
 def racine(x, y):
     return x ** (1 / y)  # Se permite potencia como operador interno
 
-def sinus(x, terms=100):
+def sinus(x, terms=10):
     result = 0
     for n in range(terms):
         sign = (-1)**n
         result += sign * (x**(2*n+1)) / factorial(2*n+1)
     return result
 
-def cosinus(x, terms=100):
+def cosinus(x, terms=10):
     result = 0
     for n in range(terms):
         sign = (-1)**n
