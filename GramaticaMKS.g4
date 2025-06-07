@@ -65,6 +65,7 @@ fileReadStatement   : 'read_file' '(' STRING ',' ID ')' ';' ;
 fileWriteStatement  : 'write_file' '(' STRING ',' expr ')' ';' ;
 returnStatement     : 'return' '(' expr ')' ';' ;
 sqrtStatement       : 'sqrt' '(' expr ')' ';'? ;
+factStatement       : 'factorial' '(' expr ')' ';'? ;
 sinStatement        : 'sin' '(' expr ')' ';'? ;
 cosStatement        : 'cos' '(' expr ')' ';'? ;
 tanStatement        : 'tan' '(' expr ')' ';'? ;
@@ -131,6 +132,7 @@ expr
    | functionInvoke                                #FunctionInvokeExpr
    | inputStatement                                #InputStmtExpr
    | sqrtStatement                                 #SqrtStmtExpr
+   | factStatement                                 #FacttmtExpr
    | sinStatement                                  #SinStmtExpr
    | cosStatement                                  #CosStmtExpr
    | tanStatement                                  #TanStmtExpr
