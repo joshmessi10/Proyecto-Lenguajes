@@ -228,6 +228,10 @@ class MyVisitor(GramaticaMKSVisitor):
         value = self.visit(ctx.expr())
         return value**(1/2)
 
+    def visitFactStatement(self, ctx):
+        value = self.visit(ctx.expr())
+        return math_ops.factorial(value)
+
     def visitSinStatement(self, ctx):
         value = self.visit(ctx.expr())
         return math_ops.sinus(value)
@@ -480,6 +484,9 @@ class MyVisitor(GramaticaMKSVisitor):
 
     def visitSqrtStmtExpr(self, ctx):
         return self.visitSqrtStatement(ctx.sqrtStatement())
+
+    def visitFacttmtExpr(self, ctx):
+        return self.visitFactStatement(ctx.factStatement())
 
     def visitSinStmtExpr(self, ctx):
         return self.visitSinStatement(ctx.sinStatement())
