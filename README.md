@@ -301,3 +301,16 @@ print(inv(cuadrado));
 print(trans(cuadrado));
 ```
 **Salida:**
+
+### 6. Regresión líneal
+```
+let x = [0, 2, 3, 4];
+let y = [2, 4, 6, 8];
+linear_regression(x, y);
+```
+
+**Salida:**
+```
+Modelo: y = 1.49x + 1.66
+```
+
