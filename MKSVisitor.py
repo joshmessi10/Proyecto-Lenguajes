@@ -9,53 +9,146 @@ from collections import Counter
 
 matplotlib.use("TkAgg")
 
+def exp(x, terms=20):
+    result = 1
+    term = 1
+    for i in range(1, terms):
+        term *= x / i
+        result += term
+    return result
+
+def sigmoid(x):
+    return 1 / (1 + exp(-x))
+
+def sigmoid_derivative(x):
+    return x * (1 - x)
+
+class SimpleRandom:
+    def __init__(self, seed=1):
+        self.state = seed
+
+    def next(self):
+        # Algoritmo congruencial lineal (LCG)
+        self.state = (1103515245 * self.state + 12345) % (2**31)
+        return self.state / (2**31)  # valor entre 0 y 1
+
+    def randn(self):
+        # Box-Muller sin math: aproximación usando serie de Taylor
+        u1 = self.next()
+        u2 = self.next()
+        l = -self._ln(u1)  # ln(u1)
+        angle = 2 * 3.141592653589793 * u2  # pi aprox
+        return self._sqrt(2 * l) * self._cos(angle)
+
+    def _ln(self, x, terms=10):
+        # ln usando serie de Taylor para ln(1+x)
+        x = (x - 1) / (x + 1)
+        result = 0
+        for n in range(terms):
+            result += (1 / (2 * n + 1)) * (x ** (2 * n + 1))
+        return 2 * result
+
+    def _sqrt(self, x, iterations=10):
+        guess = x / 2
+        for _ in range(iterations):
+            guess = (guess + x / guess) / 2
+        return guess
+
+    def _cos(self, x, terms=10):
+        # coseno por serie de Taylor
+        result = 1
+        term = 1
+        for i in range(1, terms):
+            term *= -x * x / ((2 * i - 1) * (2 * i))
+            result += term
+        return result
+    
+def linear_regression(X, Y):
+    n = len(X)
+    sum_x = sum(X)
+    sum_y = sum(Y)
+    sum_x2 = sum([x * x for x in X])
+    sum_xy = sum([X[i] * Y[i] for i in range(n)])
+
+    mean_x = sum_x / n
+    mean_y = sum_y / n
+
+    numerator = sum_xy - n * mean_x * mean_y
+    denominator = sum_x2 - n * mean_x * mean_x
+    slope = numerator / denominator
+    intercept = mean_y - slope * mean_x
+
+    print("Pendiente:", slope)
+    print("Intersección:", intercept)
+
+    Y_pred = [slope * x + intercept for x in X]
+    return Y_pred
+
 
 class MLP:
-    def __init__(self, layer_sizes, learning_rate):
+    def __init__(self, layer_sizes, learning_rate, seed=1):
         self.layer_sizes = layer_sizes
         self.learning_rate = learning_rate
-        self.weights = [
-            np.random.randn(layer_sizes[i], layer_sizes[i + 1])
-            for i in range(len(layer_sizes) - 1)
-        ]
-        self.biases = [np.random.randn(size) for size in layer_sizes[1:]]
+        self.rand = SimpleRandom(seed)
+        self.weights = [[[self.rand.randn() for _ in range(layer_sizes[i + 1])]
+                         for _ in range(layer_sizes[i])]
+                        for i in range(len(layer_sizes) - 1)]
+        self.biases = [[self.rand.randn() for _ in range(size)]
+                       for size in layer_sizes[1:]]
 
-    def sigmoid(self, x):
-        return 1 / (1 + np.exp(-x))
+    def dot(self, A, B):
+        result = []
+        for row in A:
+            new_row = []
+            for j in range(len(B[0])):
+                s = 0
+                for k in range(len(row)):
+                    s += row[k] * B[k][j]
+                new_row.append(s)
+            result.append(new_row)
+        return result
 
-    def sigmoid_derivative(self, x):
-        return x * (1 - x)
+    def add_bias(self, mat, bias):
+        return [[val + bias[i] for i, val in enumerate(row)] for row in mat]
+
+    def apply_activation(self, mat):
+        return [[sigmoid(x) for x in row] for row in mat]
+
+    def transpose(self, mat):
+        return [[row[i] for row in mat] for i in range(len(mat[0]))]
 
     def train(self, inputs, outputs, epochs):
-        inputs = np.array(inputs)
-        outputs = np.array(outputs)
         for _ in range(epochs):
-            # Forward pass
             activations = [inputs]
             for w, b in zip(self.weights, self.biases):
-                activations.append(self.sigmoid(np.dot(activations[-1], w) + b))
+                z = self.add_bias(self.dot(activations[-1], w), b)
+                a = self.apply_activation(z)
+                activations.append(a)
 
-            # Backward pass
-            deltas = [outputs - activations[-1]]
-            for i in range(len(self.weights) - 1, 0, -1):
-                deltas.append(
-                    deltas[-1]
-                    @ self.weights[i].T
-                    * self.sigmoid_derivative(activations[i])
-                )
+            # Error
+            output_layer = activations[-1]
+            deltas = [[outputs[i][j] - output_layer[i][j]
+                       for j in range(len(output_layer[0]))]
+                      for i in range(len(outputs))]
 
-            deltas.reverse()
-
-            # Update weights and biases
+            # Backpropagation solo para una capa oculta
             for i in range(len(self.weights)):
-                self.weights[i] += activations[i].T @ deltas[i] * self.learning_rate
-                self.biases[i] += np.sum(deltas[i], axis=0) * self.learning_rate
+                layer_input = activations[i]
+                for j in range(len(self.weights[i])):
+                    for k in range(len(self.weights[i][j])):
+                        grad = sum(layer_input[n][j] * deltas[n][k]
+                                   for n in range(len(deltas)))
+                        self.weights[i][j][k] += grad * self.learning_rate
+                for j in range(len(self.biases[i])):
+                    self.biases[i][j] += sum(d[n][j] for n, d in enumerate(deltas)) * self.learning_rate
 
     def predict(self, input_data):
-        input_data = np.array(input_data)
+        a = input_data
         for w, b in zip(self.weights, self.biases):
-            input_data = self.sigmoid(np.dot(input_data, w) + b)
-        return input_data
+            z = self.add_bias(self.dot(a, w), b)
+            a = self.apply_activation(z)
+        return a
+
 
 
 class MyVisitor(GramaticaMKSVisitor):
@@ -227,7 +320,7 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitSqrtStatement(self, ctx):
         value = self.visit(ctx.expr())
         return value**(1/2)
-
+    
     def visitFactStatement(self, ctx):
         value = self.visit(ctx.expr())
         return math_ops.factorial(value)
@@ -276,23 +369,31 @@ class MyVisitor(GramaticaMKSVisitor):
         return array
 
     def visitLinearRegression(self, ctx):
-        id_x = ctx.ID(0).getText()
-        id_y = ctx.ID(1).getText()
-        X = np.array(self.memory[id_x])
-        Y = np.array(self.memory[id_y])
-        slope, intercept, r_value, p_value, std_err = stats.linregress(X, Y)
-        print(f"Pendiente: {slope}")
-        print(f"Intersección: {intercept}")
-        print(f"Coeficiente de correlación: {r_value}")
-        print(f"Valor p: {p_value}")
-        print(f"Error estándar: {std_err}")
-        Y_pred = slope * X + intercept
-        plt.scatter(X, Y, label="Datos")
-        plt.plot(X, Y_pred, color="red", label="Recta de ajuste")
-        plt.xlabel("X")
-        plt.ylabel("Y")
-        plt.legend()
-        plt.show()
+        x_var = ctx.ID(0).getText()
+        y_var = ctx.ID(1).getText()
+
+        x_values = self.memory[x_var]
+        y_values = self.memory[y_var]
+
+        n = len(x_values)
+        if n != len(y_values):
+            raise ValueError("Las listas deben tener el mismo tamaño.")
+
+        mean_x = sum(x_values) / n
+        mean_y = sum(y_values) / n
+
+        # Pendiente y ordenada al origen
+        numerador = sum((x_values[i] - mean_x) * (y_values[i] - mean_y) for i in range(n))
+        denominador = sum((x_values[i] - mean_x) ** 2 for i in range(n))
+
+        if denominador == 0:
+            raise ZeroDivisionError("No se puede dividir por cero en la regresión lineal.")
+
+        a = numerador / denominador
+        b = mean_y - a * mean_x
+
+        print(f"Modelo: y = {a:.2f}x + {b:.2f}")
+        self.memory['lr_result'] = (a, b)
         return None
 
     def visitSplitStatement(self, ctx):
@@ -482,11 +583,11 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitInputStmtExpr(self, ctx):
         return self.visitInputStatement(ctx.inputStatement())
 
-    def visitSqrtStmtExpr(self, ctx):
-        return self.visitSqrtStatement(ctx.sqrtStatement())
-
     def visitFacttmtExpr(self, ctx):
         return self.visitFactStatement(ctx.factStatement())
+
+    def visitSqrtStmtExpr(self, ctx):
+        return self.visitSqrtStatement(ctx.sqrtStatement())
 
     def visitSinStmtExpr(self, ctx):
         return self.visitSinStatement(ctx.sinStatement())
