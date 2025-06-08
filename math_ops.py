@@ -17,6 +17,28 @@ def puissance(x, y):
 def racine(x, y):
     return x ** (1 / y)  # Se permite potencia como operador interno
 
+def __init__(self, seed=1):
+        self.state = seed
+
+def next(self):
+    # Algoritmo congruencial lineal (LCG)
+    self.state = (1103515245 * self.state + 12345) % (2**31)
+    return self.state / (2**31)  # valor entre 0 y 1
+
+def randn(self):
+    u1 = self.next()
+    u2 = self.next()
+    l = -self._ln(u1)  # ln(u1)
+    angle = 2 * 3.141592653589793 * u2  # pi aprox
+    return self._sqrt(2 * l) * self._cos(angle)
+
+def ln(self, x, terms=10):
+    x = (x - 1) / (x + 1)
+    result = 0
+    for n in range(terms):
+        result += (1 / (2 * n + 1)) * (x ** (2 * n + 1))
+    return 2 * result
+
 def sinus(x, terms=10):
     result = 0
     for n in range(terms):
