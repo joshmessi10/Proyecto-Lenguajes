@@ -104,14 +104,16 @@ Para usar el lenguaje MKS puedes hacerlo ejecutando el script main.py y opcional
 Para simplificar el proceso de ejecutar un archivo, agregar el siguiente comando a el dotfile de la Shell.
 
 ### bash
-Recuerda estar ubicado en la carpeta de tu proyecto
+Descargar el zip en descargas, recuerda estar ubicado en la carpeta de tu proyecto
+
+Dar permisos al sh (ejemplo java.sh)
 ```
-echo alias mks="python3 '$(pwd)/main.py'" >>  ~/.bashrc
+chmod +x setup.sh
 ```
 
-### ZSH
+Ejecutar el sh
 ```
-echo alias mks="python3 '$(pwd)/main.py'" >>  ~/.zshrc
+./setup.sh
 ```
 
 ## Opción 2:
