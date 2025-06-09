@@ -310,7 +310,7 @@ La línea más frecuente es: 'Sírvame un aguardientoski' con una frecuencia de 
 
 ```
 graphs([2, 20, 30, 2], [5, 10, 15, 8]);
-graphs(-10, 10, -5, 5, "x^2");
+graphs(-3, 3, -1, 5, "x^2");
 graphs(-6.28, 6.28, -1.5, 1.5, "sin(x)");
 ```
 **Salida:**
@@ -343,26 +343,26 @@ graphs(-6.28, 6.28, -1.5, 1.5, "sin(x)");
 
   5 -|                              x^2                                     
      |                                                                      
-     |                           *             *                            
+     |                                                                      
+  4 -|                                                                      
+     |           *                                             *            
+     |                                                                      
+     |                                                                      
   3 -|                                                                      
      |                                                                      
+     |                 *                                 *                  
      |                                                                      
-     |                             *         *                              
   1 -|                                                                      
-     |                               *     *                                
      |                                                                      
-     |                                * * *                                 
+     |                       *                      *                       
+     |                                                                      
+  0 -|                                                                      
+     |                            *     *     *                             
+     |                                                                      
+     |                                                                      
  -1 -|                                                                      
-     |                                                                      
-     |                                                                      
-     |                                                                      
- -3 -|                                                                      
-     |                                                                      
-     |                                                                      
-     |                                                                      
- -5 -|                                                                      
       ----------------------------------------------------------------------
-      -10    -8     -6     -4     -2      0      2      4      6      8     
+       -3    -2     -2     -1     -1      0      1      1      2      2     
                                                                             
 
 
@@ -388,7 +388,6 @@ graphs(-6.28, 6.28, -1.5, 1.5, "sin(x)");
  -2 -|                                                                      
       ----------------------------------------------------------------------
        -6    -5     -4     -3     -1      0      1      3      4      5     
-                                                                            
 ```
 
 
@@ -403,6 +402,28 @@ linear_regression(x, y);
 **Salida:**
 ```
 Modelo: y = 1.49x + 1.66
+  9 -|                             Regresión Lineal                                   
+     |                                                                                
+     |                                                                                
+  7 -|                                                                        *    ...
+     |                                                                         ....   
+     |                                                                    .....       
+     |                                                               .....            
+  6 -|                                                           ....                 
+     |                                                      .....                     
+     |                                                 .....                          
+     |                                             ....                               
+  4 -|                                        .....                                   
+     |                                   .....                                        
+     |                               ....                                             
+     |                          .....        *                                        
+  3 -|                     .....                                                      
+     |                 ....                                                           
+     |            .....                                                               
+     |       .....                                                                    
+  1 -|   ....                                                                         
+      ...-----------------------------------------------------------------------------
+       -0      0       1       1       2       2       2       3       3       4      
 ```
 
 
@@ -426,9 +447,9 @@ print("Resultado de la predicción para [0, 1]: " + str(result3));
 **Salida:**
 
 ```
-Resultado de la predicción para [0, 0]: [0.4993827765993156]
-Resultado de la predicción para [1, 1]: [0.5010458186179483]
-Resultado de la predicción para [0, 1]: [0.5003285924142936]
+Resultado de la predicción para [0, 0]: [0.5035767413954642]
+Resultado de la predicción para [1, 1]: [0.4934783684948506]
+Resultado de la predicción para [0, 1]: [0.49091433875855317]
 ```
 ### 8. **Clustering K-Means**
 
@@ -447,24 +468,25 @@ mostrarClustering(data);
 **Salida:**
 
 ```
-Punto: [1. 2.], Cluster: 1
-Punto: [1.1 2.1], Cluster: 1
-Punto: [1.2 2.2], Cluster: 0
-Punto: [1.3 2.3], Cluster: 0
-Punto: [1.4 2.4], Cluster: 0
-Punto: [5. 6.], Cluster: 3
-Punto: [5.1 6.1], Cluster: 3
-Punto: [5.2 6.2], Cluster: 3
-Punto: [5.3 6.3], Cluster: 3
-Punto: [5.4 6.4], Cluster: 3
-Punto: [10. 10.], Cluster: 2
-Punto: [10.1 10.1], Cluster: 2
-Punto: [10.2 10.2], Cluster: 2
-Punto: [10.3 10.3], Cluster: 2
-Punto: [10.4 10.4], Cluster: 2
-Punto: [15. 16.], Cluster: 2
-Punto: [15.1 16.1], Cluster: 2
-Punto: [15.2 16.2], Cluster: 2
-Punto: [15.3 16.3], Cluster: 2
-Punto: [15.4 16.4], Cluster: 2
+Resultados del Clustering:
+Punto: [1.0, 2.0], Cluster: 0
+Punto: [1.1, 2.1], Cluster: 0
+Punto: [1.2, 2.2], Cluster: 3
+Punto: [1.3, 2.3], Cluster: 3
+Punto: [1.4, 2.4], Cluster: 2
+Punto: [5.0, 6.0], Cluster: 2
+Punto: [5.1, 6.1], Cluster: 2
+Punto: [5.2, 6.2], Cluster: 2
+Punto: [5.3, 6.3], Cluster: 2
+Punto: [5.4, 6.4], Cluster: 2
+Punto: [10.0, 10.0], Cluster: 1
+Punto: [10.1, 10.1], Cluster: 1
+Punto: [10.2, 10.2], Cluster: 1
+Punto: [10.3, 10.3], Cluster: 1
+Punto: [10.4, 10.4], Cluster: 1
+Punto: [15.0, 16.0], Cluster: 1
+Punto: [15.1, 16.1], Cluster: 1
+Punto: [15.2, 16.2], Cluster: 1
+Punto: [15.3, 16.3], Cluster: 1
+Punto: [15.4, 16.4], Cluster: 1
 ```
