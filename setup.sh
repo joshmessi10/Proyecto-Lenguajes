@@ -1,8 +1,5 @@
 #!/bin/zsh
 
-echo alias mks="python3 '/home/nuvu-pc-n4gx/Personal/University/Lenguajes de programacion/proyecto-final-lenguajes-programacion/main.py'" >>  ~/.zshrc
-#!/bin/bash
-
 # Ruta de ANTLR
 ANTLR_JAR="$HOME/Downloads/ANTLR-main/antlr-4.13.1-complete.jar"
 GRAMMAR_FILE="GramaticaMKS.g4"
