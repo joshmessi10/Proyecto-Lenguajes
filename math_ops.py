@@ -41,14 +41,14 @@ def log(x, base=10):
 def racine(x, y):
     return x ** (1 / y)  # Se permite potencia como operador interno
 
-def sinus(x, terms=10):
+def sinus(x, terms=1000):
     result = 0
     for n in range(terms):
         sign = (-1)**n
         result += sign * (x**(2*n+1)) / factorial(2*n+1)
     return result
 
-def cosinus(x, terms=10):
+def cosinus(x, terms=1000):
     result = 0
     for n in range(terms):
         sign = (-1)**n
@@ -56,7 +56,6 @@ def cosinus(x, terms=10):
     return result
 
 def somme(a, b):
-    print(matrix(a))
     if matrix(a) and matrix(b) and len(a)==len(b) and len(a[0])==len(b[0]):
         return [[a[i][j]+b[i][j] for j in range(len(a[0]))]for i in range(len(a))]
     else:
@@ -130,6 +129,21 @@ def division(a, b):
 def modulo(a, b):
     return a % b
 
+def exp(x, terms=20):
+    result = 1
+    term = 1
+    for i in range(1, terms):
+        term *= x / i
+        result += term
+    return result
+
+def sigmoid(x):
+    return 1 / (1 + exp(-x))
+
+def sigmoid_deriv(x):
+    sx = sigmoid(x)
+    return sx * (1 - sx)
+
 def matrix(a):
     if type(a)== list:
         t=type(a[0])
@@ -143,3 +157,17 @@ def matrix(a):
             return True
     else:
         return False
+    
+_A = 1664525
+_C = 1013904223
+_M = 2**32
+_seed = 234235235
+
+def _lcg():
+    global _seed
+    _seed = (_A * _seed + _C) % _M
+    return _seed
+
+def randint( min_val: int, max_val: int) -> int:
+    rnd = _lcg()
+    return min_val + rnd % (max_val - min_val + 1)
