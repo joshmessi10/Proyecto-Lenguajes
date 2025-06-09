@@ -19,6 +19,11 @@ statement
     | fileWriteStatement
     | returnStatement
     | sqrtStatement
+    | factStatement
+    | expStatement
+    | racineStatement
+    | lnStatement
+    | logStatement
     | sinStatement
     | cosStatement
     | tanStatement
@@ -66,6 +71,10 @@ fileWriteStatement  : 'write_file' '(' STRING ',' expr ')' ';' ;
 returnStatement     : 'return' '(' expr ')' ';' ;
 sqrtStatement       : 'sqrt' '(' expr ')' ';'? ;
 factStatement       : 'factorial' '(' expr ')' ';'? ;
+expStatement        : 'exp' '(' expr ',' expr ')' ';'? ;
+racineStatement     : 'racine' '(' expr ',' expr ')' ';'? ;
+lnStatement         : 'ln' '(' expr ')' ';'? ;
+logStatement        : 'log' '(' expr ',' expr ')' ';'? ;
 sinStatement        : 'sin' '(' expr ')' ';'? ;
 cosStatement        : 'cos' '(' expr ')' ';'? ;
 tanStatement        : 'tan' '(' expr ')' ';'? ;
@@ -132,7 +141,11 @@ expr
    | functionInvoke                                #FunctionInvokeExpr
    | inputStatement                                #InputStmtExpr
    | sqrtStatement                                 #SqrtStmtExpr
-   | factStatement                                 #FacttmtExpr
+   | factStatement                                 #FactStmtExpr
+   | expStatement                                  #ExpStmtExpr
+   | racineStatement                               #RacineStmtExpr
+   | lnStatement                                   #lnStmtExpr
+   | logStatement                                  #logStmtExpr
    | sinStatement                                  #SinStmtExpr
    | cosStatement                                  #CosStmtExpr
    | tanStatement                                  #TanStmtExpr
