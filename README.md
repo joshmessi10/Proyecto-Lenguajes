@@ -292,11 +292,11 @@ let y=[[9,8,7],[2,3,4]];
 let cuadrado =[
     [4, 7],
     [2, 6]
-]
+];
 print(x+y);
 print(x-y);
 print(2*x);
-print(cuadrado @ x)
+print(cuadrado @ x);
 print(inv(cuadrado));
 print(trans(cuadrado));
 ```
