@@ -14,30 +14,32 @@ def puissance(x, y):
         res *= x
     return res
 
+def ln(x, terms=20):
+    if x <= 0:
+        raise ValueError("ln(x) está definido solo para x > 0")
+    k = 0
+    while x > 2:
+        x = racine(x, 2)
+        k += 1
+    while x < 0.5:
+        x = x * x
+        k -= 1
+    z = (x - 1) / (x + 1)
+    z2 = z * z
+    result = 0
+
+    for n in range(terms):
+        term = (1 / (2 * n + 1)) * puissance(z, 2 * n + 1)
+        result += term
+
+    return 2 * result * puissance(2, k)  # Aproximación ajustada
+
+def log(x, base=10):
+    return ln(x) / ln(base)
+
+
 def racine(x, y):
     return x ** (1 / y)  # Se permite potencia como operador interno
-
-def __init__(self, seed=1):
-        self.state = seed
-
-def next(self):
-    # Algoritmo congruencial lineal (LCG)
-    self.state = (1103515245 * self.state + 12345) % (2**31)
-    return self.state / (2**31)  # valor entre 0 y 1
-
-def randn(self):
-    u1 = self.next()
-    u2 = self.next()
-    l = -self._ln(u1)  # ln(u1)
-    angle = 2 * 3.141592653589793 * u2  # pi aprox
-    return self._sqrt(2 * l) * self._cos(angle)
-
-def ln(self, x, terms=10):
-    x = (x - 1) / (x + 1)
-    result = 0
-    for n in range(terms):
-        result += (1 / (2 * n + 1)) * (x ** (2 * n + 1))
-    return 2 * result
 
 def sinus(x, terms=10):
     result = 0
