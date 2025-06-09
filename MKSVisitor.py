@@ -463,6 +463,7 @@ class MyVisitor(GramaticaMKSVisitor):
 
         print(f"Modelo: y = {a:.2f}x + {b:.2f}")
         self.memory['lr_result'] = (a, b)
+        draw_regression_plot(x_values, y_values, a, b)
         return None
 
     def visitSplitStatement(self, ctx):
