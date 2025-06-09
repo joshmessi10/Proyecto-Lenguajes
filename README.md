@@ -284,7 +284,7 @@ Ingrese un número para calcular su factorial: 5
 El factorial de 5 es: 120.
 ```
 
-### 5. **Matriz**
+### 6. **Matriz**
 
 ```
 let x=[[1,2,3],[1,1,1]];
@@ -311,7 +311,7 @@ print(trans(cuadrado));
 [[4, 2], [7, 6]]
 ```
 
-### 6. Regresión líneal
+### 7. Regresión líneal
 ```
 let x = [0, 2, 3, 4];
 let y = [2, 4, 6, 8];
