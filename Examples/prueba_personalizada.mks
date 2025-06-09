@@ -1,0 +1,13 @@
+function fact(n) {
+    let resultado = 1;
+    for (i from 1 to n) {
+        let resultado = resultado * i;
+    }
+    return(resultado);
+}
+
+let numero = int(input("Ingrese un número para calcular su factorial: "));
+
+let fact = factorial(numero);
+
+print("El factorial de " + str(numero) + " es: " + str(fact) + ".");

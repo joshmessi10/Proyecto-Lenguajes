@@ -1,0 +1,14 @@
+let numero = int(input("Ingrese un número para operaciones matemáticas: "));
+
+let raiz = sqrt(numero);
+let seno = sin(numero);
+let coseno = cos(numero);
+let tangente = tan(numero);
+let raizCubica = numero^3;
+
+print("");
+print("Raíz cuadrada de " + str(numero) + " es: " + str(raiz));
+print("Seno de " + str(numero) + " es: " + str(seno));
+print("Coseno de " + str(numero) + " es: " + str(coseno));
+print("Tangente de " + str(numero) + " es: " + str(tangente));
+print("Raíz cúbica de " + str(numero) + " es: " + str(raizCubica));
