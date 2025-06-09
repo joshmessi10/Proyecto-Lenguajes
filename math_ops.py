@@ -168,7 +168,7 @@ def matrix(a):
 _A = 1664525
 _C = 1013904223
 _M = 2**32
-_seed = 234235235
+_seed = 3151617
 
 def _lcg():
     global _seed
