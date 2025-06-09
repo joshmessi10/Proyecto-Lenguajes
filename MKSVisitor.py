@@ -6,6 +6,7 @@ import math_ops
 import matplotlib
 import matplotlib.pyplot as plt
 from collections import Counter
+import graph
 
 matplotlib.use("TkAgg")
 
@@ -249,43 +250,24 @@ class MyVisitor(GramaticaMKSVisitor):
 
         self.memory = local_memory
         return return_value
+    
+    def visitGraphsStatement(self, ctx):
+        width = 80
+        height = 20
+        canvas = graph.create_canvas(width, height)
 
-    def visitGraphStatement(self, ctx):
-        x_values = self.visit(ctx.expr(0))
-        y_values = self.visit(ctx.expr(1))
-        if ctx.STRING():
-            title = ctx.STRING().getText().strip('"')
-            plt.ylim(-10, 10)
-            plt.plot(x_values, y_values, label=title)
-            plt.legend()
-        else:
-            plt.ylim(-10, 10)
-            plt.plot(x_values, y_values)
-        return None
+        x_points = self.visit(ctx.expr(0))
+        y_points = self.visit(ctx.expr(1))
 
-    def visitGraphBarStatement(self, ctx):
-        x_values = self.visit(ctx.expr(0))
-        y_values = self.visit(ctx.expr(1))
-        if ctx.STRING():
-            title = ctx.STRING().getText().strip('"')
-            plt.title(title)
-        plt.bar(x_values, y_values)
-        return None
+        if len(x_points) != len(y_points):
+            raise Exception("Las listas de puntos X y Y deben tener la misma longitud.")
 
-    def visitGraphScatterStatement(self, ctx):
-        x_values = self.visit(ctx.expr(0))
-        y_values = self.visit(ctx.expr(1))
-        if ctx.STRING():
-            title = ctx.STRING().getText().strip('"')
-            plt.scatter(x_values, y_values, label=title)
-            plt.legend()
-        else:
-            plt.scatter(x_values, y_values)
-        return None
+        graph.draw_axes(canvas, width=width, height=height)
 
-    def visitShowGraph(self, ctx):
-        plt.show()
-        return None
+        for x, y in zip(x_points, y_points):
+            graph.plot_point(canvas, x, y, "*")
+
+        graph.draw_canvas(canvas)
 
     def visitFileReadStatement(self, ctx):
         filename = ctx.STRING().getText().strip('"')
@@ -573,6 +555,10 @@ class MyVisitor(GramaticaMKSVisitor):
 
     def visitParentheses(self, ctx):
         return self.visit(ctx.expr())
+    
+    def visitArrayGraph(self, ctx):
+        return [self.visit(e) for e in ctx.expr()]
+
 
     def visitArrayInvoke(self, ctx):
         arrayName = ctx.ID().getText()
