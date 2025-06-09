@@ -791,9 +791,21 @@ class MyVisitor(GramaticaMKSVisitor):
         return labels
 
     def visitMostrarClustering(self, ctx):
+        simbolos=['°','*','+','☼','♦','•']
+        width = 70
+        height = 20
+        canvas = graph.create_canvas(width, height)
         data_name = ctx.ID().getText()
         data = self.environment.get(data_name, [])
         labels = self.environment.get(f"{data_name}_labels", [])
         print("Resultados del Clustering:")
+        x_min, x_max = min([pair[0] for pair in data]), max([pair[0] for pair in data])
+        y_min, y_max = min([pair[0] for pair in data]), max([pair[0] for pair in data])
         for point, label in zip(data, labels):
             print(f"Punto: {point}, Cluster: {label}")
+            cx = int((point[0] - x_min) / (x_max - x_min) * (width - 1))
+            cy = int((point[1] - y_min) / (y_max - y_min) * (height - 1))
+            graph.plot_point(canvas,cx,cy,char=simbolos[label])
+            
+        graph.draw_axes(canvas, width, height, x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max)
+        graph.draw_canvas(canvas)
