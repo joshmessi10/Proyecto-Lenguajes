@@ -1,3 +1,5 @@
+#graph.py
+
 def create_canvas(width=80, height=20):
     return [[" " for _ in range(width + 6)] for _ in range(height + 3)]
 
@@ -11,26 +13,30 @@ def plot_point(canvas, x, y, char="*"):
         canvas[canvas_y][canvas_x + 6] = char  # desplazamiento para eje Y
 
 
-def draw_axes(canvas, width=80, height=20, x_ticks=10, y_ticks=5):
+def draw_axes(canvas, width=80, height=20, x_ticks=10, y_ticks=5, x_min=0, x_max=1, y_min=0, y_max=1):
     for y in range(height):
         canvas[y][5] = "|"
     for x in range(width):
         canvas[height][x + 6] = "-"
 
-    # Etiquetas Y
+    # Etiquetas Y reales
     for i in range(y_ticks + 1):
-        y_val = int(i * height / y_ticks)
-        label = str(i * height // y_ticks).rjust(2)
-        canvas[height - y_val - 1][0:3] = list(label)
-        canvas[height - y_val - 1][4] = "-"
+        frac = i / y_ticks
+        val = y_max - frac * (y_max - y_min)
+        label = f"{val:.0f}".rjust(3)
+        row = int(frac * (height - 1))
+        canvas[row][0:3] = list(label)
+        canvas[row][4] = "-"
 
-    # Etiquetas X
+    # Etiquetas X reales
     for i in range(x_ticks + 1):
-        x_val = int(i * width / x_ticks)
-        label = str(x_val).rjust(3)
+        frac = i / x_ticks
+        val = x_min + frac * (x_max - x_min)
+        col = int(frac * (width - 1))
+        label = f"{val:.0f}".rjust(3)
         for j, ch in enumerate(label):
-            if x_val + 6 + j < len(canvas[0]) and height + 1 < len(canvas):
-                canvas[height + 1][x_val + 6 + j] = ch
+            if col + 6 + j < len(canvas[0]):
+                canvas[height + 1][col + 6 + j] = ch
 
 def draw_canvas(canvas):
     for row in canvas:
@@ -62,3 +68,12 @@ def plot_line(canvas, x0, y0, x1, y1, char="*"):
                 err += dy
             y += sy
     plot_point(canvas, x, y, char)
+
+def draw_title(canvas, title):
+    # Dibuja el título centrado en la primera fila del canvas
+    width = len(canvas[0])
+    title_len = len(title)
+    start_col = max((width - title_len) // 2, 0)
+    for i, ch in enumerate(title):
+        if 0 <= start_col + i < width:
+            canvas[0][start_col + i] = ch
