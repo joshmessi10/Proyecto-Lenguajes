@@ -72,6 +72,40 @@ def linear_regression(X, Y):
     Y_pred = [slope * x + intercept for x in X]
     return Y_pred
 
+def draw_regression_plot(X, Y, a, b, width=80, height=20):
+    # Determinar límites
+    x_min, x_max = min(X), max(X)
+    y_min, y_max = min(Y), max(Y)
+
+    # Padding visual
+    x_padding = (x_max - x_min) * 0.1 or 1
+    y_padding = (y_max - y_min) * 0.1 or 1
+    x_min -= x_padding
+    x_max += x_padding
+    y_min -= y_padding
+    y_max += y_padding
+
+    def scale_x(x):
+        return int((x - x_min) / (x_max - x_min) * (width - 1))
+
+    def scale_y(y):
+        return int((y - y_min) / (y_max - y_min) * (height - 1))
+
+    canvas = graph.create_canvas(width, height)
+    graph.draw_axes(canvas, width, height, x_ticks=10, y_ticks=5, x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max)
+
+    # Puntos originales
+    for x, y in zip(X, Y):
+        graph.plot_point(canvas, scale_x(x), scale_y(y), "*")
+
+    # Línea de regresión
+    x0, x1 = x_min, x_max
+    y0, y1 = a * x0 + b, a * x1 + b
+    graph.plot_line(canvas, scale_x(x0), scale_y(y0), scale_x(x1), scale_y(y1), ".")
+
+    graph.draw_title(canvas, "Regresión Lineal")
+    graph.draw_canvas(canvas)
+
 class MLP:
     def __init__(self, layer_sizes, learning_rate,seed=1):
 
