@@ -1,21 +1,12 @@
 from GramaticaMKSVisitor import GramaticaMKSVisitor
-from scipy import stats
-import numpy as np
-import random
-import math_ops
+import math_ops 
 from collections import Counter
 import graph
 
-def exp(x, terms=20):
-    result = 1
-    term = 1
-    for i in range(1, terms):
-        term *= x / i
-        result += term
-    return result
+
 
 def sigmoid(x):
-    return 1 / (1 + exp(-x))
+    return 1 / (1 + math_ops.exp(-x))
 
 def sigmoid_derivative(x):
     return x * (1 - x)
@@ -81,71 +72,71 @@ def linear_regression(X, Y):
     Y_pred = [slope * x + intercept for x in X]
     return Y_pred
 
-
 class MLP:
-    def __init__(self, layer_sizes, learning_rate, seed=1):
+    def __init__(self, layer_sizes, learning_rate,seed=1):
+
         self.layer_sizes = layer_sizes
-        self.learning_rate = learning_rate
         self.rand = SimpleRandom(seed)
-        self.weights = [[[self.rand.randn() for _ in range(layer_sizes[i + 1])]
-                         for _ in range(layer_sizes[i])]
+        self.weights = [[[self.rand.randn()for _ in range(layer_sizes[i]) ]
+                         for _ in range(layer_sizes[i + 1])]
                         for i in range(len(layer_sizes) - 1)]
         self.biases = [[self.rand.randn() for _ in range(size)]
                        for size in layer_sizes[1:]]
+        self.learning_rate=learning_rate
 
-    def dot(self, A, B):
-        result = []
-        for row in A:
-            new_row = []
-            for j in range(len(B[0])):
-                s = 0
-                for k in range(len(row)):
-                    s += row[k] * B[k][j]
-                new_row.append(s)
-            result.append(new_row)
-        return result
+    def _propagacion(self, entrada):
+        activaciones = [entrada]
+        entradas_z = []
 
-    def add_bias(self, mat, bias):
-        return [[val + bias[i] for i, val in enumerate(row)] for row in mat]
+        for l in range(len(self.weights)):
+            capa_entrada = activaciones[-1]
+            z = []
+            a = []
+            for j in range(len(self.weights[l])):
+                suma = sum(self.weights[l][j][k] * capa_entrada[k] for k in range(len(capa_entrada))) + self.biases[l][j]
+                z.append(suma)
+                a.append(sigmoid(suma))
+            entradas_z.append(z)
+            activaciones.append(a)
 
-    def apply_activation(self, mat):
-        return [[sigmoid(x) for x in row] for row in mat]
+        return activaciones, entradas_z
 
-    def transpose(self, mat):
-        return [[row[i] for row in mat] for i in range(len(mat[0]))]
+    def _retropropagacion(self, x, y):
+        activaciones, entradas_z = self._propagacion(x)
+        deltas = [0] * (len(self.layer_sizes) - 1)
+        # Cálculo del error en la capa de salida
+        salida = activaciones[-1]
+        deltas[-1] = [
+            (salida[i] - y[i]) * math_ops.sigmoid_deriv(entradas_z[-1][i])
+            for i in range(len(y))
+        ]
 
-    def train(self, inputs, outputs, epochs):
+        # Retropropagación del error
+        for l in range(len(deltas) - 2, -1, -1):
+            deltas[l] = []
+            for i in range(self.layer_sizes[l+1]):
+                error = sum(
+                    deltas[l+1][j] * self.weights[l+1][j][i]
+                    for j in range(self.layer_sizes[l+2])
+                )
+                deltas[l].append(error * math_ops.sigmoid_deriv(entradas_z[l][i]))
+                
+        # Actualización de pesos y sesgos
+        for l in range(len(self.weights)):
+            for i in range(len(self.weights[l])):  # neurona actual
+                for j in range(len(self.weights[l][i])):  # peso
+                    self.weights[l][i][j] -= self.learning_rate * deltas[l][i] * activaciones[l][j]
+                self.biases[l][i] -= self.learning_rate * deltas[l][i]
+
+    def train(self,inputs, outputs, epochs):
         for _ in range(epochs):
-            activations = [inputs]
-            for w, b in zip(self.weights, self.biases):
-                z = self.add_bias(self.dot(activations[-1], w), b)
-                a = self.apply_activation(z)
-                activations.append(a)
-
-            # Error
-            output_layer = activations[-1]
-            deltas = [[outputs[i][j] - output_layer[i][j]
-                       for j in range(len(output_layer[0]))]
-                      for i in range(len(outputs))]
-
-            # Backpropagation solo para una capa oculta
-            for i in range(len(self.weights)):
-                layer_input = activations[i]
-                for j in range(len(self.weights[i])):
-                    for k in range(len(self.weights[i][j])):
-                        grad = sum(layer_input[n][j] * deltas[n][k]
-                                   for n in range(len(deltas)))
-                        self.weights[i][j][k] += grad * self.learning_rate
-                for j in range(len(self.biases[i])):
-                    self.biases[i][j] += sum(d[n][j] for n, d in enumerate(deltas)) * self.learning_rate
+            for x, y in zip(inputs, outputs):
+                self._retropropagacion(x, y)
 
     def predict(self, input_data):
-        a = input_data
-        for w, b in zip(self.weights, self.biases):
-            z = self.add_bias(self.dot(a, w), b)
-            a = self.apply_activation(z)
-        return a
-
+        salida, _ = self._propagacion(input_data)
+        return salida[-1]
+  
 
 
 class MyVisitor(GramaticaMKSVisitor):
@@ -246,7 +237,7 @@ class MyVisitor(GramaticaMKSVisitor):
 
         self.memory = local_memory
         return return_value
-        
+    
     def visitGraphsStatement(self, ctx):
         width = 70
         height = 20
@@ -331,7 +322,7 @@ class MyVisitor(GramaticaMKSVisitor):
         max_value = int(ctx.INT(1).getText())  # Segundo número entero
 
         # Genera un número aleatorio dentro del rango
-        result = random.randint(min_value, max_value)
+        result = math_ops.random.randint(min_value, max_value)
 
         # Devuelve el número generado (o imprime, según tu necesidad)
         return result
@@ -765,7 +756,7 @@ class MyVisitor(GramaticaMKSVisitor):
             raise KeyError(f"Los datos '{data_name}' no están definidos.")
 
         data = list(self.environment[data_name])  # Obtiene los datos
-        centroids = random.sample(data, k)
+        centroids = [data[math_ops.randint(0,len(data))] for _ in range(k)]
 
         for _ in range(100):  # Iterar hasta la convergencia o 100 iteraciones
             clusters = [[] for _ in range(k)]
@@ -785,10 +776,11 @@ class MyVisitor(GramaticaMKSVisitor):
                         [sum(coord) / len(coord) for coord in zip(*cluster)]
                     )
                 else:
-                    new_centroids.append(random.choice(data))
+                    new_centroids.append(data[math_ops.randint(0,len(data))])
 
-            if np.allclose(centroids, new_centroids):
-                break
+            for i in range(len(centroids)):
+                if centroids[i] != new_centroids[i]:
+                    break
 
         labels = [
             min(range(k), key=lambda i: self.euclidean_distance(point,
