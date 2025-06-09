@@ -262,7 +262,7 @@ Resultado de la predicción para [0, 1]: [0.5003285924142936]
 ### 5. **Funciones Personalizadas**
 
 ```mks
-function factorial(n) {
+function fact(n) {
     let resultado = 1;
     for (i from 1 to n) {
         let resultado = resultado * i;
