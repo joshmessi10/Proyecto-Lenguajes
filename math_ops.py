@@ -55,6 +55,13 @@ def cosinus(x, terms=1000):
         result += sign * (x**(2*n)) / factorial(2*n)
     return result
 
+def tan(x):
+    result = sinus(x)/cosinus(x)
+    return result
+
+def abst(x):
+    return x if x >= 0 else -x
+
 def somme(a, b):
     if matrix(a) and matrix(b) and len(a)==len(b) and len(a[0])==len(b[0]):
         return [[a[i][j]+b[i][j] for j in range(len(a[0]))]for i in range(len(a))]
