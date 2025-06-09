@@ -34,21 +34,21 @@ def ln(x, terms=20):
 
     return 2 * result * puissance(2, k)  # Aproximación ajustada
 
-def log(x, base=10):
+def log(x, base=20):
     return ln(x) / ln(base)
 
 
 def racine(x, y):
     return x ** (1 / y)  # Se permite potencia como operador interno
 
-def sinus(x, terms=10):
+def sinus(x, terms=20):
     result = 0
     for n in range(terms):
         sign = (-1)**n
         result += sign * (x**(2*n+1)) / factorial(2*n+1)
     return result
 
-def cosinus(x, terms=10):
+def cosinus(x, terms=20):
     result = 0
     for n in range(terms):
         sign = (-1)**n
