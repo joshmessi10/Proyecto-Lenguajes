@@ -58,7 +58,9 @@ forStatement        : 'for' '(' ID rangeExpr ')' '{' statement* '}' ;
 functionDefinition  : 'function' ID '(' params? ')' '{' statement* '}' ;
 functionInvoke      : ID '(' args? ')' ';'? ;
 
-graphsStatement     : 'graphs' '(' expr ',' expr (',' STRING)? ')' ';' ;
+graphsStatement     : 'graphs' '(' expr ',' expr ',' expr ',' expr ',' STRING ')' ';'
+                    | 'graphs' '(' expr ',' expr (',' STRING)? ')' ';' ;
+
 
 fileReadStatement   : 'read_file' '(' STRING ',' ID ')' ';' ;
 fileWriteStatement  : 'write_file' '(' STRING ',' expr ')' ';' ;
