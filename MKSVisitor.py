@@ -241,7 +241,8 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitGraphsStatement(self, ctx):
         width = 70
         height = 20
-        canvas = graph.create_canvas(width, height)
+        symbol= ctx.SYM().getText().strip('"') if ctx.SYM() else "*"
+        canvas = graph.create_canvas(width, height) if "show_graph" not in self.environment.keys() else self.environment["show_graph"]
 
         if ctx.STRING():  # graphs(x_min, x_max, y_min, y_max, "función")
             x_min = self.visit(ctx.expr(0))
@@ -262,12 +263,14 @@ class MyVisitor(GramaticaMKSVisitor):
             for x, y in zip(points_x, points_y):
                 cx = int((x - x_min) / (x_max - x_min) * (width - 1))
                 cy = int((y - y_min) / (y_max - y_min) * (height - 1))  # SIN invertir aquí
-                graph.plot_point(canvas, cx, cy, "*")
+                graph.plot_point(canvas, cx, cy,symbol)
 
         graph.draw_axes(canvas, width, height, x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max)
-        graph.draw_canvas(canvas)
+        self.environment["show_graph"]=canvas
         return None
     
+
+
     def plot_function(self, canvas, func_str, x_min, x_max, y_min, y_max, step=0.5):
         width = len(canvas[0]) - 6  # ancho útil
         height = len(canvas) - 3    # alto útil
@@ -291,12 +294,15 @@ class MyVisitor(GramaticaMKSVisitor):
         while x <= x_max:
             try:
                 y = safe_eval(func_str, x)
+                y_min,y_max
                 cx, cy = to_canvas_coords(x, y)
                 graph.plot_point(canvas, cx, cy, "*")
             except Exception:
                 pass
             x += step
-
+    def visitShowGraph(self, ctx):
+        graph.draw_canvas(self.environment["show_graph"])
+    
     def visitFileReadStatement(self, ctx):
         filename = ctx.STRING().getText().strip('"')
         var_name = ctx.ID().getText()
