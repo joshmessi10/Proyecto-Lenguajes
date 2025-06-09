@@ -13,6 +13,7 @@ statement
     | functionDefinition
     | functionInvoke
     | graphsStatement
+    | showGraph
     | fileReadStatement
     | fileWriteStatement
     | returnStatement
@@ -59,9 +60,9 @@ functionDefinition  : 'function' ID '(' params? ')' '{' statement* '}' ;
 functionInvoke      : ID '(' args? ')' ';'? ;
 
 graphsStatement     : 'graphs' '(' expr ',' expr ',' expr ',' expr ',' STRING ')' ';'
-                    | 'graphs' '(' expr ',' expr (',' STRING)? ')' ';' ;
-
-
+                    |'graphs' '(' expr ',' expr (',' STRING)?(',' 'char=' SYM)? ')' ';' ;
+showGraph           :'show_graph' '()' ;
+SYM                 : ('"°"'|'"*"'|'"+"'|'"☼"'|'"♦"'|'"•"') ;
 fileReadStatement   : 'read_file' '(' STRING ',' ID ')' ';' ;
 fileWriteStatement  : 'write_file' '(' STRING ',' expr ')' ';' ;
 returnStatement     : 'return' '(' expr ')' ';' ;
