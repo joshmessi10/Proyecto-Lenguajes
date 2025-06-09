@@ -3,12 +3,8 @@ from scipy import stats
 import numpy as np
 import random
 import math_ops
-import matplotlib
-import matplotlib.pyplot as plt
 from collections import Counter
 import graph
-
-matplotlib.use("TkAgg")
 
 def exp(x, terms=20):
     result = 1
@@ -250,24 +246,65 @@ class MyVisitor(GramaticaMKSVisitor):
 
         self.memory = local_memory
         return return_value
-    
+        
     def visitGraphsStatement(self, ctx):
-        width = 80
+        width = 70
         height = 20
         canvas = graph.create_canvas(width, height)
 
-        x_points = self.visit(ctx.expr(0))
-        y_points = self.visit(ctx.expr(1))
+        if ctx.STRING():  # graphs(x_min, x_max, y_min, y_max, "función")
+            x_min = self.visit(ctx.expr(0))
+            x_max = self.visit(ctx.expr(1))
+            y_min = self.visit(ctx.expr(2))
+            y_max = self.visit(ctx.expr(3))
+            func_str = ctx.STRING().getText().strip('"')
+            # Dibujamos el título antes de graficar
+            print("\n")
+            graph.draw_title(canvas, func_str)
+            self.plot_function(canvas, func_str, x_min, x_max, y_min, y_max)
+        else:
+            # Recibe puntos
+            points_x = self.visit(ctx.expr(0))
+            points_y = self.visit(ctx.expr(1))
+            x_min, x_max = min(points_x), max(points_x)
+            y_min, y_max = min(points_y), max(points_y)
+            for x, y in zip(points_x, points_y):
+                cx = int((x - x_min) / (x_max - x_min) * (width - 1))
+                cy = int((y - y_min) / (y_max - y_min) * (height - 1))  # SIN invertir aquí
+                graph.plot_point(canvas, cx, cy, "*")
 
-        if len(x_points) != len(y_points):
-            raise Exception("Las listas de puntos X y Y deben tener la misma longitud.")
-
-        graph.draw_axes(canvas, width=width, height=height)
-
-        for x, y in zip(x_points, y_points):
-            graph.plot_point(canvas, x, y, "*")
-
+        graph.draw_axes(canvas, width, height, x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max)
         graph.draw_canvas(canvas)
+        return None
+    
+    def plot_function(self, canvas, func_str, x_min, x_max, y_min, y_max, step=0.5):
+        width = len(canvas[0]) - 6  # ancho útil
+        height = len(canvas) - 3    # alto útil
+
+        def safe_eval(expr, x):
+            expr = expr.replace("^", "**")
+            return eval(expr, {
+                "x": x,
+                "sin": math_ops.sinus, "cos": math_ops.cosinus, "tan": math_ops.tan, "ln": math_ops.ln,
+                "log": math_ops.log, "exp": math_ops.puissance, "sqrt": math_ops.racine,
+                "__builtins__": {}
+            })
+
+        def to_canvas_coords(x, y):
+            canvas_x = int((x - x_min) / (x_max - x_min) * (width - 1))
+            canvas_y = int((y_max - y) / (y_max - y_min) * (height - 1))
+            canvas_y = (height - 1) - canvas_y
+            return canvas_x, canvas_y
+
+        x = x_min
+        while x <= x_max:
+            try:
+                y = safe_eval(func_str, x)
+                cx, cy = to_canvas_coords(x, y)
+                graph.plot_point(canvas, cx, cy, "*")
+            except Exception:
+                pass
+            x += step
 
     def visitFileReadStatement(self, ctx):
         filename = ctx.STRING().getText().strip('"')
