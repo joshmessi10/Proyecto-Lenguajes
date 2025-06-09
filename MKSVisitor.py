@@ -324,6 +324,25 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitFactStatement(self, ctx):
         value = self.visit(ctx.expr())
         return math_ops.factorial(value)
+    
+    def visitExpStatement(self, ctx):
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+        return math_ops.puissance(left, right)
+    
+    def visitRacineStatement(self, ctx):
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+        return math_ops.racine(left, right)
+    
+    def visitLnStatement(self, ctx):
+        value = self.visit(ctx.expr())
+        return math_ops.ln(value)
+    
+    def visitLogStatement(self, ctx):
+        left = self.visit(ctx.expr(0))
+        right = self.visit(ctx.expr(1))
+        return math_ops.log(left, right)
 
     def visitSinStatement(self, ctx):
         value = self.visit(ctx.expr())
@@ -583,11 +602,23 @@ class MyVisitor(GramaticaMKSVisitor):
     def visitInputStmtExpr(self, ctx):
         return self.visitInputStatement(ctx.inputStatement())
 
-    def visitFacttmtExpr(self, ctx):
+    def visitFactStmtExpr(self, ctx):
         return self.visitFactStatement(ctx.factStatement())
 
     def visitSqrtStmtExpr(self, ctx):
         return self.visitSqrtStatement(ctx.sqrtStatement())
+    
+    def visitExpStmtExpr(self, ctx):
+        return self.visitExpStatement(ctx.expStatement())
+    
+    def visitLnStmtExpr(self, ctx):
+        return self.visitLnStatement(ctx.lnStatement())
+    
+    def visitLogStmtExpr(self, ctx):
+        return self.visitLogStatement(ctx.logStatement())
+    
+    def visitRacineStmtExpr(self, ctx):
+        return self.visitRacineStatement(ctx.racineStatement())
 
     def visitSinStmtExpr(self, ctx):
         return self.visitSinStatement(ctx.sinStatement())
