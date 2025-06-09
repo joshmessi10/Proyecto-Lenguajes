@@ -253,7 +253,7 @@ class MyVisitor(GramaticaMKSVisitor):
             # Dibujamos el título antes de graficar
             print("\n")
             graph.draw_title(canvas, func_str)
-            self.plot_function(canvas, func_str, x_min, x_max, y_min, y_max)
+            self.plot_function(canvas, func_str, x_min, x_max, y_min, y_max,char=symbol)
         else:
             # Recibe puntos
             points_x = self.visit(ctx.expr(0))
@@ -271,7 +271,7 @@ class MyVisitor(GramaticaMKSVisitor):
     
 
 
-    def plot_function(self, canvas, func_str, x_min, x_max, y_min, y_max, step=0.5):
+    def plot_function(self, canvas, func_str, x_min, x_max, y_min, y_max, step=0.5,char="*"):
         width = len(canvas[0]) - 6  # ancho útil
         height = len(canvas) - 3    # alto útil
 
@@ -296,7 +296,7 @@ class MyVisitor(GramaticaMKSVisitor):
                 y = safe_eval(func_str, x)
                 y_min,y_max
                 cx, cy = to_canvas_coords(x, y)
-                graph.plot_point(canvas, cx, cy, "*")
+                graph.plot_point(canvas, cx, cy, char)
             except Exception:
                 pass
             x += step
