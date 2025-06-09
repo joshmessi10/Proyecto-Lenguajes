@@ -240,22 +240,22 @@ mlp_define(myMLP, [2, 2, 3, 1], 0.1);
 
 mlp_train(myMLP, [[0, 0], [0, 1], [1, 0], [1, 1]], [[0], [1], [1], [0]], 1000);
 
-let result1 = mlp_predict(myMLP, [[0, 0]]);
+let result1 = mlp_predict(myMLP, [0, 0]);
 print("Resultado de la predicción para [0, 0]: " + str(result1));
 
-let result2 = mlp_predict(myMLP, [[1, 1]]);
+let result2 = mlp_predict(myMLP, [1, 1]);
 print("Resultado de la predicción para [1, 1]: " + str(result2));
 
-let result3 = mlp_predict(myMLP, [[0, 1]]);
+let result3 = mlp_predict(myMLP, [0, 1]);
 print("Resultado de la predicción para [0, 1]: " + str(result3));
 ```
 
 **Salida:**
 
 ```
-Resultado de la predicción para [0, 0]: [[0.50069996]]
-Resultado de la predicción para [1, 1]: [[0.49934825]]
-Resultado de la predicción para [0, 1]: [[0.49996084]]
+Resultado de la predicción para [0, 0]: [0.4993827765993156]
+Resultado de la predicción para [1, 1]: [0.5010458186179483]
+Resultado de la predicción para [0, 1]: [0.5003285924142936]
 ```
 
 
