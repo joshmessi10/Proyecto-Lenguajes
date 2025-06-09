@@ -15,11 +15,12 @@ Este proyecto define un lenguaje de programación basado en una gramática desar
 
 ## Características Principales
 
-
-- **Declaraciones y control de flujo:** `if-else`, `while`, `for`.
-- **Operaciones matemáticas:** suma, resta, potencias, raíces, funciones trigonométricas, etc.
+- **Declaraciones:** numeros, variables, strings.
+- **Control de flujo:** `if-else`, `while`, `for`, `print`, `return`.
+- **Operaciones matemáticas:** suma, resta, potencias, raíces, funciones trigonométricas, valor absoluto, logaritmo natural, logaritmo, modulo etc.
 - **Manipulación de arrays:** operaciones como `append`, `remove`, `pop`, `split`, `count`.
-- **Funciones gráficas:** generación de gráficas lineales, de barras y de dispersión.
+- **Manipulación de matrics:** operaciones como `inv`.
+- **Funciones gráficas:** generación de gráficas punto a punto, funciones trigonometricas, lineales, cuadráticas, etc.
 - **Procesamiento de archivos:** lectura y escritura de archivos.
 - **Aprendizaje automático:** definición y entrenamiento de MLP, regresión lineal, y clustering con K-Means.
 
@@ -38,7 +39,6 @@ grammar GramaticaMKS;
 ### Instalación de ANTLR
 
 1. Instala ANTLR4 siguiendo los siguientes pasos
-
 
 #### Linux
 
