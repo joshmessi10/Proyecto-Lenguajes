@@ -27,6 +27,67 @@ Este proyecto define un lenguaje de programación basado en una gramática desar
 ## Especificación de la gramática
 ```g4
 grammar GramaticaMKS;
+
+//Asiganciones
+assignment          : 'let' ID '=' expr ';' ;
+printStatement      : 'print' '(' expr ')' ';' ;
+
+//Condicionales
+ifElseStatement     : 'if' '(' expr ')' '{' ifBlock+=statement* '}'
+                    ( 'else' '{' elseBlock+=statement* '}' )? ;
+
+//Ciclos
+whileStatement      : 'while' '(' expr ')' '{' statement* '}' ;
+forStatement        : 'for' '(' ID rangeExpr ')' '{' statement* '}' ;
+
+//Funciones
+functionDefinition  : 'function' ID '(' params? ')' '{' statement* '}' ;
+functionInvoke      : ID '(' args? ')' ';'? ;
+
+//Graficar
+graphsStatement     : 'graphs' '(' expr ',' expr ',' expr ',' expr ',' STRING ')' ';'
+                    | 'graphs' '(' expr ',' expr (',' STRING)? ')' ';' ;
+
+//Files
+fileReadStatement   : 'read_file' '(' STRING ',' ID ')' ';' ;
+fileWriteStatement  : 'write_file' '(' STRING ',' expr ')' ';' ;
+
+//Funciones trigonometricas, etc
+returnStatement     : 'return' '(' expr ')' ';' ;
+sqrtStatement       : 'sqrt' '(' expr ')' ';'? ;
+factStatement       : 'factorial' '(' expr ')' ';'? ;
+expStatement        : 'exp' '(' expr ',' expr ')' ';'? ;
+racineStatement     : 'racine' '(' expr ',' expr ')' ';'? ;
+lnStatement         : 'ln' '(' expr ')' ';'? ;
+logStatement        : 'log' '(' expr ',' expr ')' ';'? ;
+sinStatement        : 'sin' '(' expr ')' ';'? ;
+cosStatement        : 'cos' '(' expr ')' ';'? ;
+tanStatement        : 'tan' '(' expr ')' ';'? ;
+
+//Matrices
+invStatement        : 'inv' '(' expr ')' ';'? ;
+transStatement      : 'trans' '(' expr ')' ';'? ;
+
+//Arrays
+arrayAppend         : ID '.' 'append' '(' expr ')' ';' ;
+arrayRemove         : ID '.' 'remove' '(' expr ')' ';' ;
+arrayPop            : ID '.' 'pop' '(' INT? ')' ';' ;
+splitStatement      : ID '.' 'split' '(' STRING? ')' ';'? ;
+countStatement      : ID '.' 'count' '(' ID ',' ID ')' ';'? ;
+maxStatement        : 'max' '(' ID ')' ';'? ;
+indexStatement      : ID '.' 'index' '(' expr ')' ';'? ;
+
+//Regresión Lineal
+linearRegression    : 'linear_regression' '(' ID ',' ID ')' ';' ;
+
+//MLP
+mlpDefinition : 'mlp_define' '(' ID ',' layerSizes=arr ',' learningRate=FLOAT ')' ';'? ;
+mlpTrain     : 'mlp_train' '(' ID ',' input=arr ',' output=arr ',' epochs=INT ')' ';'? ;
+mlpPredict   : 'mlp_predict' '(' ID ',' input=arr ')' ';'? ;
+
+//Clustering
+clusteringKMeans   : 'kmeans' '(' ID ',' expr ')' ';' ;
+mostrarClustering  : 'mostrarClustering' '(' ID ')' ;
 ```
 
 ## 🧷 Requerimientos
