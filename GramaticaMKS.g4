@@ -12,9 +12,7 @@ statement
     | forStatement
     | functionDefinition
     | functionInvoke
-    | graphStatement
-    | graphBarStatement
-    | graphScatterStatement
+    | graphsStatement
     | fileReadStatement
     | fileWriteStatement
     | returnStatement
@@ -35,7 +33,6 @@ statement
     | arrayPop
     | linearRegression
     | splitStatement
-    | showGraph
     | countStatement
     | maxStatement
     | indexStatement
@@ -51,7 +48,6 @@ statement
 // Reglas específicas de statements
 assignment          : 'let' ID '=' expr ';' ;
 printStatement      : 'print' '(' expr ')' ';' ;
-showGraph           : 'show_graph' '(' ')' ';' ;
 
 ifElseStatement     : 'if' '(' expr ')' '{' ifBlock+=statement* '}'
                     ( 'else' '{' elseBlock+=statement* '}' )? ;
@@ -62,9 +58,7 @@ forStatement        : 'for' '(' ID rangeExpr ')' '{' statement* '}' ;
 functionDefinition  : 'function' ID '(' params? ')' '{' statement* '}' ;
 functionInvoke      : ID '(' args? ')' ';'? ;
 
-graphStatement      : 'graph' '(' expr ',' expr (',' STRING)? ')' ';' ;
-graphBarStatement   : 'graph_bar' '(' expr ',' expr (',' STRING)? ')' ';' ;
-graphScatterStatement : 'graph_scatter' '(' expr ',' expr (',' STRING)? ')' ';' ;
+graphsStatement     : 'graphs' '(' expr ',' expr (',' STRING)? ')' ';' ;
 
 fileReadStatement   : 'read_file' '(' STRING ',' ID ')' ';' ;
 fileWriteStatement  : 'write_file' '(' STRING ',' expr ')' ';' ;
@@ -136,6 +130,7 @@ expr
    | expr '@' expr                                 #DotProductExpr
    | '(' expr ')'                                  #Parentheses
    | randomStatement                               #RandomStatementExpr
+   | arrayGraph                                    #ArrayGraphExpr
    | arrayInvoke                                   #ArrayInvokeExpr
    | arrayLength                                   #ArrayLengthExpr
    | functionInvoke                                #FunctionInvokeExpr
@@ -171,6 +166,7 @@ expr
    | clusteringKMeans                              #ClusteringKMeansExpr
    ;
 
+arrayGraph : '[' expr (',' expr)* ']' ;
 arrayInvoke         : ID '[' expr ']' ;
 arrayLength         : 'length' '(' expr ')' ;
 randomStatement      : 'random' '(' INT ',' INT ')';
