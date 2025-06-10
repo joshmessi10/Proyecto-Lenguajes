@@ -279,7 +279,7 @@ print(trans(cuadrado));
 ### 4. **Procesamiento de Archivos**
 
 ```mks
-read_file("examples/ejemplo.txt", contenido);
+read_file("Examples/ejemplo.txt", contenido);
 
 let lineas = contenido.split("\n");
 
@@ -294,7 +294,7 @@ let linea_mas_frecuente = elementos[indice];
 
 print("La línea más frecuente es: '" + str(linea_mas_frecuente) + "' con una frecuencia de " + str(max_freq) + ".");
 
-write_file("examples/salida.txt", "La línea más frecuente es: '" + str(linea_mas_frecuente) + "' con una frecuencia de " + str(max_freq) + ".");
+write_file("Examples/salida.txt", "La línea más frecuente es: '" + str(linea_mas_frecuente) + "' con una frecuencia de " + str(max_freq) + ".");
 ```
 
 **Salida:**
