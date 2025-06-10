@@ -1,4 +1,4 @@
-read_file("examples/El aguardientoski.txt", contenido);
+read_file("examples/ejemplo.txt", contenido);
 
 let lineas = contenido.split("\n");
 
