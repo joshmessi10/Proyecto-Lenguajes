@@ -451,24 +451,46 @@ mostrarClustering(data);
 
 ```
 Resultados del Clustering:
-Punto: [1.0, 2.0], Cluster: 0
-Punto: [1.1, 2.1], Cluster: 0
-Punto: [1.2, 2.2], Cluster: 3
-Punto: [1.3, 2.3], Cluster: 3
+Punto: [1.0, 2.0], Cluster: 2
+Punto: [1.1, 2.1], Cluster: 2
+Punto: [1.2, 2.2], Cluster: 2
+Punto: [1.3, 2.3], Cluster: 2
 Punto: [1.4, 2.4], Cluster: 2
 Punto: [5.0, 6.0], Cluster: 2
 Punto: [5.1, 6.1], Cluster: 2
 Punto: [5.2, 6.2], Cluster: 2
 Punto: [5.3, 6.3], Cluster: 2
-Punto: [5.4, 6.4], Cluster: 2
+Punto: [5.4, 6.4], Cluster: 1
 Punto: [10.0, 10.0], Cluster: 1
 Punto: [10.1, 10.1], Cluster: 1
 Punto: [10.2, 10.2], Cluster: 1
 Punto: [10.3, 10.3], Cluster: 1
 Punto: [10.4, 10.4], Cluster: 1
-Punto: [15.0, 16.0], Cluster: 1
-Punto: [15.1, 16.1], Cluster: 1
-Punto: [15.2, 16.2], Cluster: 1
-Punto: [15.3, 16.3], Cluster: 1
-Punto: [15.4, 16.4], Cluster: 1
+Punto: [15.0, 16.0], Cluster: 3
+Punto: [15.1, 16.1], Cluster: 3
+Punto: [15.2, 16.2], Cluster: 3
+Punto: [15.3, 16.3], Cluster: 0
+Punto: [15.4, 16.4], Cluster: 0
+ 15 -|                                                                    °°
+     |                                                                   ☼  
+     |                                                                      
+ 13 -|                                                                      
+     |                                                                      
+     |                                                                      
+     |                                                                      
+ 10 -|                                                                      
+     |                                           ***                        
+     |                                           *                          
+     |                                                                      
+  7 -|                                                                      
+     |                                                                      
+     |                     *                                                
+     |                   ++                                                 
+  4 -|                                                                      
+     |                                                                      
+     |                                                                      
+     |                                                                      
+  1 -|++                                                                    
+      ----------------------------------------------------------------------
+        1     2      4      5      7      8     10     11     13     14     
 ```
