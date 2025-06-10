@@ -16,10 +16,10 @@ Este proyecto define un lenguaje de programación basado en una gramática desar
 ## Características Principales
 
 - **Declaraciones:** numeros, variables, strings.
-- **Control de flujo:** `if-else`, `while`, `for`, `print`, `return`.
+- **Control de flujo:** `if-else`, `while`, `for`.
 - **Operaciones matemáticas:** suma, resta, potencias, raíces, funciones trigonométricas, valor absoluto, logaritmo natural, logaritmo, modulo etc.
 - **Manipulación de arrays:** operaciones como `append`, `remove`, `pop`, `split`, `count`.
-- **Manipulación de matrics:** operaciones como `inv`.
+- **Manipulación de matrices:** operaciones como la inversa o transpuesta.
 - **Funciones gráficas:** generación de gráficas punto a punto, funciones trigonometricas, lineales, cuadráticas, etc.
 - **Procesamiento de archivos:** lectura y escritura de archivos.
 - **Aprendizaje automático:** definición y entrenamiento de MLP, regresión lineal, y clustering con K-Means.
@@ -279,7 +279,7 @@ print(trans(cuadrado));
 ### 4. **Procesamiento de Archivos**
 
 ```mks
-read_file("examples/El aguardientoski.txt", contenido);
+read_file("examples/ejemplo.txt", contenido);
 
 let lineas = contenido.split("\n");
 
@@ -303,15 +303,14 @@ Guarda un archivo dentro de la carpeta de examples llamado `salida.txt` la últ
 
 ```
 Contando frecuencias de líneas...
-La línea más frecuente es: 'Sírvame un aguardientoski' con una frecuencia de 5.
+La línea más frecuente es: 'Había una vez un molinero ' con una frecuencia de 3.
 ```
 
 ### 5. **Graficar**
 
 ```
 graphs([2, 20, 30, 2], [5, 10, 15, 8]);
-graphs(-3, 3, -1, 5, "x^2");
-graphs(-6.28, 6.28, -1.5, 1.5, "sin(x)");
+show_graph();
 ```
 **Salida:**
 
@@ -338,56 +337,39 @@ graphs(-6.28, 6.28, -1.5, 1.5, "sin(x)");
   5 -|                                                                      
       ----------------------------------------------------------------------
         2     5      8     10     13     16     19     22     24     27     
-                                                                            
+```
 
+**Ejemplo 2:**
+```
+graphs(-6, 6, -1.5, 1.5, "sin(x)");
+graphs(-6, 6, -1.5, 1.5, "cos(x)",char="+");
+show_graph();
+```
+**Salida:**
 
-  5 -|                              x^2                                     
-     |                                                                      
-     |                                                                      
-  4 -|                                                                      
-     |           *                                             *            
-     |                                                                      
-     |                                                                      
-  3 -|                                                                      
-     |                                                                      
-     |                 *                                 *                  
-     |                                                                      
-  1 -|                                                                      
-     |                                                                      
-     |                       *                      *                       
-     |                                                                      
-  0 -|                                                                      
-     |                            *     *     *                             
-     |                                                                      
-     |                                                                      
- -1 -|                                                                      
-      ----------------------------------------------------------------------
-       -3    -2     -2     -1     -1      0      1      1      2      2     
-                                                                            
-
-
-  2 -|                             sin(x)                                   
+```
+  2 -|                             cos(x)                                   
      |                                                                      
      |                                                                      
   1 -|                                                                      
-     |        * *                              * *                          
-     |     *                                        *                       
-     |             *                        *                               
-  0 -|  *                                              *                    
-     |                                                                      
-     |                *                  *                                  
-     |*                                                   *               * 
- -0 -|                                                                      
-     |                   *            *                                     
-     |                                                      *          *    
-     |                              *                                       
- -1 -|                     *                                                
-     |                        *  *                             *  *  *      
+     |+    *  *                      +  +  +     *  *                      +
+     |           *                            *                             
+     |  +                                             *                 +   
+  0 -|                            +        *  +                             
+     |*    +        *                                                +      
+     |                                                   *                  
+     |                         +        *        +                          
+ -0 -|        +        *                                          +         
+     |                                                      *              *
+     |                       +       *              +                       
+     |           +        *                                    +        *   
+ -1 -|                    +       *                   +        *            
+     |              +  +     * *                         +  +     *  *      
      |                                                                      
      |                                                                      
  -2 -|                                                                      
       ----------------------------------------------------------------------
-       -6    -5     -4     -3     -1      0      1      3      4      5     
+       -6    -5     -4     -2     -1      0      1      2      4      5     
 ```
 
 
